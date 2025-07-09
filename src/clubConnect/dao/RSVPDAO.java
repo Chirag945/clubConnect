@@ -3,8 +3,7 @@ package clubConnect.dao;
 import clubConnect.util.DBConnection;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class RSVPDAO {
 
@@ -19,10 +18,10 @@ public class RSVPDAO {
             ps.setString(3, "registered");
 
             ps.executeUpdate();
-            System.out.println("✅ Registered successfully!");
+            System.out.println("Registered successfully!");
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            System.out.println("❌ Already registered or invalid event ID.");
+            System.out.println("Already registered or invalid event ID.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,13 +59,33 @@ public class RSVPDAO {
             int rows = ps.executeUpdate();
 
             if (rows > 0) {
-                System.out.println("✅ RSVP cancelled.");
+                System.out.println("RSVP cancelled.");
             } else {
-                System.out.println("❌ You were not registered for this event.");
+                System.out.println("You were not registered for this event.");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    public Map<Integer, Integer> getRsvpCountsForAllEvents() {
+        String sql = "SELECT eventID, COUNT(*) as rsvpCount FROM RSVP GROUP BY eventID";
+        Map<Integer, Integer> counts = new HashMap<>();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                counts.put(rs.getInt("eventID"), rs.getInt("rsvpCount"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error fetching RSVP counts: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return counts;
+    }
+
 }

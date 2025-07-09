@@ -3,6 +3,11 @@ package clubConnect;
 import clubConnect.dao.*;
 import clubConnect.model.*;
 import java.util.*;
+import clubConnect.recommendation.RecommendationStrategy;
+import clubConnect.recommendation.TagBasedRecommendation;
+import clubConnect.recommendation.PopularityBasedRecommendation;
+import clubConnect.recommendation.EventRecommendationEngine;
+
 
 public class clubConnectCLI {
     private static final Scanner scanner = new Scanner(System.in);
@@ -66,6 +71,7 @@ public class clubConnectCLI {
                 System.out.println("6. View Registered Events");
                 System.out.println("7. Cancel RSVP");
                 System.out.println("8. Logout");
+                System.out.println("9. View Popular Events");
                 System.out.print("Choose option: ");
 
                 int choice = scanner.nextInt();
@@ -80,6 +86,7 @@ public class clubConnectCLI {
                     case 6 -> viewRegisteredEvents(student);
                     case 7 -> cancelRSVP(student);
                     case 8 -> { return; }
+                    case 9 -> viewRecommendedEvents(student);
                     default -> System.out.println("Invalid option.");
                 }
 
@@ -87,6 +94,20 @@ public class clubConnectCLI {
 
         } else {
             System.out.println("❌ Invalid credentials.");
+        }
+    }
+    private static void viewRecommendedEvents(Student student) {
+        RecommendationStrategy strategy = new PopularityBasedRecommendation();
+        EventRecommendationEngine engine = new EventRecommendationEngine(strategy);
+        List<Event> events = engine.getRecommendations(student);
+
+        if (events.isEmpty()) {
+            System.out.println(" No recommended events.");
+        } else {
+            System.out.println("---  Recommended Events ---");
+            for (Event e : events) {
+                System.out.println(e + "\n");
+            }
         }
     }
 
@@ -116,7 +137,11 @@ public class clubConnectCLI {
 
     private static void viewMatchingEvents(Student student) {
         EventDAO eventDAO = new EventDAO();
-        List<Event> events = eventDAO.getEventsMatchingTags(student.getInterests());
+        //List<Event> events = eventDAO.getEventsByTag(student.getInterests());
+        List<String> interests = student.getInterests();
+        RecommendationStrategy strategy = new TagBasedRecommendation();
+        EventRecommendationEngine engine = new EventRecommendationEngine(strategy);
+        List<Event> events = engine.getRecommendations(student);
 
         if (events.isEmpty()) {
             System.out.println("No matching events found.");
