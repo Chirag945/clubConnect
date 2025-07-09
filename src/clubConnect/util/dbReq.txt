@@ -1,0 +1,23 @@
+create database clubConnect;
+use clubConnect;
+CREATE TABLE student (
+    studentID INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(70),
+    email VARCHAR(70) UNIQUE,
+    password VARCHAR(70)
+);
+create table interests(
+	 studentID INT,
+	tags VARCHAR(70),
+	  PRIMARY KEY (studentID, tags),
+	  FOREIGN KEY (studentID) REFERENCES Student(studentID)
+);
+CREATE TABLE RSVP (
+    studentID INT,
+    eventID INT,
+    status VARCHAR(20),
+    PRIMARY KEY (studentID, eventID),
+    FOREIGN KEY (studentID) REFERENCES student(studentID),
+    FOREIGN KEY (eventID) REFERENCES events(eventID)
+);
+
