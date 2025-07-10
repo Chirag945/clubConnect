@@ -6,7 +6,7 @@ A Java + MySQL application that helps students discover and register for univers
 
 ## 🚀 Features
 
-### 👨‍🎓 Student Functionality (Completed)
+### 👨‍🎓 Student Functionality
 - Register and log in with secure credentials
 - Set personal interests (e.g., tech, art, sports)
 - View personalized event suggestions
@@ -14,12 +14,12 @@ A Java + MySQL application that helps students discover and register for univers
 - View all registered events
 - Data persisted in normalized MySQL schema (3NF)
 
-### 🏛️ Club Functionality (In Progress by Team)
+### 🏛️ Club Functionality
 - Register clubs with email/password
 - Create and manage events under their name
 - View list of registered participants
 
-### 📅 Event Functionality (In Progress by Team)
+### 📅 Event Functionality
 - Create events with tags, capacity, date/time, and fee
 - Automatically match events to interested students
 - Enforce capacity and registration limits
