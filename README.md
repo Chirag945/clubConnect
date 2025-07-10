@@ -46,16 +46,12 @@ A Java + MySQL application that helps students discover and register for univers
 - **Modularity**: DAO, Model, CLI layers clearly separated
 
 ### 🗃️ Database Schema (Normalized to 3NF)
-            
-- **Student**: | **studentID** | name | email | password |
-  
-- **Club**: | **clubID** | name | email | password |
-  
-- **Events**: | **eventID** | _clubID_ | title | date | venue | tags | capacity | regFee |
-- 
-- **Interests**: **|studentID | tags |** 
-- 
-- **RSVP**: **| studentID | _eventID_ |** status |
+
+- **Student**: `studentID`, `name`, `email`, `password`
+- **Club**: `clubID`, `name`, `email`, `password`
+- **Events**: `eventID`, `clubID`, `title`, `date`, `venue`, `tags`, `capacity`, `regFee`
+- **Interests**: `studentID`, `tags` (many-to-many via tag rows)
+- **RSVP**: `studentID`, `eventID`, `status`
 
 ---
 
